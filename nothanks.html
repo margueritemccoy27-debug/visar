@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wait — Before You Go</title>
+  <meta name="robots" content="noindex, nofollow"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:       #1a7a4a;
+      --green-dark:  #0f5432;
+      --green-light: #eaf6ef;
+      --gold:        #e8a020;
+      --gold-light:  #fff8e8;
+      --cream:       #fafaf7;
+      --text:        #191c1a;
+      --muted:       #5c6b63;
+      --border:      #dde8e1;
+      --red:         #e85020;
+      --red-light:   #fff0ec;
+    }
+
+    html, body {
+      min-height: 100%;
+      font-family: 'Outfit', sans-serif;
+      background: #c8deca;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 460px;
+      background: var(--cream);
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.6) inset,
+        0 24px 80px rgba(0,0,0,0.2),
+        0 6px 20px rgba(0,0,0,0.08);
+      animation: cardIn 0.55s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: scale(0.96) translateY(24px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* ── TOP BANNER ── */
+    .top-banner {
+      background: linear-gradient(135deg, #1a3a2a 0%, #1a7a4a 100%);
+      padding: 22px 28px 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .top-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 50%, rgba(255,255,255,0.06) 0%, transparent 60%);
+    }
+
+    .emoji-big {
+      font-size: 2.6rem;
+      line-height: 1;
+      margin-bottom: 10px;
+      display: block;
+      animation: wobble 0.6s 0.4s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    @keyframes wobble {
+      0%   { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+      70%  { transform: scale(1.15) rotate(5deg); }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    .top-banner h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.55rem;
+      font-weight: 900;
+      font-style: italic;
+      color: #fff;
+      line-height: 1.2;
+      position: relative;
+    }
+
+    .top-banner h2 em {
+      font-style: normal;
+      color: #ffd97a;
+    }
+
+    .top-banner p {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.7);
+      margin-top: 6px;
+      position: relative;
+    }
+
+    /* ── STAT ROW ── */
+    .stat-row {
+      display: flex;
+      border-bottom: 1.5px solid var(--border);
+    }
+
+    .stat-item {
+      flex: 1;
+      padding: 16px 10px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+
+    .stat-item:last-child { border-right: none; }
+
+    .stat-num {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--green);
+      line-height: 1;
+      margin-bottom: 3px;
+    }
+
+    .stat-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── BODY ── */
+    .body {
+      padding: 22px 28px 6px;
+    }
+
+    .question-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    /* ── REASON TILES ── */
+    .reasons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .reason-tile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 15px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: #fff;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .reason-tile:hover {
+      border-color: #b0d4be;
+      background: var(--green-light);
+    }
+
+    .reason-tile:hover .reason-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .reason-icon {
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    .reason-text {
+      flex: 1;
+    }
+
+    .reason-text strong {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+      display: block;
+      line-height: 1.2;
+    }
+
+    .reason-text span {
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .reason-arrow {
+      font-size: 0.9rem;
+      color: var(--green);
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: all 0.18s ease;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 4px 0 16px;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .divider-text {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #b0bab5;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── MAIN CTA ── */
+    .actions {
+      padding: 0 28px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn-yes {
+      width: 100%;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #1a7a4a 0%, #229455 100%);
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 6px 20px rgba(26,122,74,0.4);
+      transition: all 0.18s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-yes::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 55%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+      animation: shimmer 3s ease-in-out 1s infinite;
+    }
+
+    @keyframes shimmer {
+      0%   { left: -100%; }
+      55%  { left: 140%; }
+      100% { left: 140%; }
+    }
+
+    .btn-yes:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(26,122,74,0.5);
+    }
+
+    .btn-leave {
+      width: 100%;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: #b0bab5;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .btn-leave:hover { color: var(--muted); text-decoration: underline; }
+
+    /* ── FINE PRINT ── */
+    .fine-print {
+      text-align: center;
+      padding: 0 24px 20px;
+      font-size: 0.63rem;
+      color: #aab4ae;
+      line-height: 1.6;
+    }
+
+    .fine-print a { color: #8aaa96; text-decoration: underline; }
+
+    @media (max-width: 400px) {
+      .card { border-radius: 22px; }
+      .body, .actions { padding-left: 20px; padding-right: 20px; }
+      .top-banner { padding: 18px 20px 16px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="card">
+
+    <!-- TOP BANNER -->
+    <div class="top-banner">
+      <span class="emoji-big">⏳</span>
+      <h2>Wait — Don't Miss<br/><em>What You May Be Owed</em></h2>
+      <p>Many people leave money on the table without realizing it.</p>
+    </div>
+
+    <!-- STAT ROW -->
+    <div class="stat-row">
+      <div class="stat-item">
+        <div class="stat-num">42M+</div>
+        <div class="stat-label">Americans enrolled</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">$0</div>
+        <div class="stat-label">Cost to check</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">60s</div>
+        <div class="stat-label">To find out</div>
+      </div>
+    </div>
+
+    <!-- BODY -->
+    <div class="body">
+      <p class="question-label">Why did you say no? Help us understand →</p>
+
+      <div class="reasons">
+
+        <div class="reason-tile" onclick="goCheck()">
+          <div class="reason-icon">🤔</div>
+          <div class="reason-text">
+            <strong>I'm not sure if I qualify</strong>
+            <span>Many people are surprised — it only takes 60 seconds to find out</span>
+          </div>
+          <span class="reason-arrow">→</span>
+        </div>
+
+        <div class="reason-tile" onclick="goCheck()">
+          <div class="reason-icon">🔒</div>
+          <div class="reason-text">
+            <strong>I'm worried about my privacy</strong>
+            <span>No personal info needed to check — completely anonymous</span>
+          </div>
+          <span class="reason-arrow">→</span>
+        </div>
+
+        <div class="reason-tile" onclick="goCheck()">
+          <div class="reason-icon">💸</div>
+          <div class="reason-text">
+            <strong>I think I earn too much</strong>
+            <span>Income limits are higher than most people expect</span>
+          </div>
+          <span class="reason-arrow">→</span>
+        </div>
+
+        <div class="reason-tile" onclick="goCheck()">
+          <div class="reason-icon">📋</div>
+          <div class="reason-text">
+            <strong>It sounds too complicated</strong>
+            <span>The check is 3 questions. No paperwork, no calls</span>
+          </div>
+          <span class="reason-arrow">→</span>
+        </div>
+
+      </div>
+
+      <div class="divider">
+        <div class="divider-line"></div>
+        <div class="divider-text">Or just check anyway</div>
+        <div class="divider-line"></div>
+      </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="actions">
+      <a href="redirect.html" class="btn-yes">
+        ✓ &nbsp;OK, Check My Eligibility for Free
+        <span style="margin-left:4px">→</span>
+      </a>
+      <a href="https://www.google.com" class="btn-leave">
+        No thanks, take me away from this page
+      </a>
+    </div>
+
+    <!-- FINE PRINT -->
+    <p class="fine-print">
+      Completely free to check. No commitment required.<br/>
+      <a href="privacy.html" target="_blank">Privacy Policy</a> &nbsp;·&nbsp;
+      <a href="terms.html" target="_blank">Terms of Use</a>
+    </p>
+
+  </div>
+</div>
+
+<script>
+  function goCheck() {
+    window.location.href = 'redirect.html';
+  }
+</script>
+</body>
+</html>

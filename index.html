@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Grocery Assistance Programs — Check Eligibility</title>
+  <meta name="description" content="Millions of Americans may qualify for government grocery assistance programs. Check your eligibility in under 60 seconds."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:        #1a7a4a;
+      --green-dark:   #0f5432;
+      --green-mid:    #228b55;
+      --green-light:  #eaf6ef;
+      --gold:         #e8a020;
+      --gold-light:   #fff4d6;
+      --white:        #ffffff;
+      --cream:        #fafaf7;
+      --text:         #191c1a;
+      --muted:        #5c6b63;
+      --border:       #dde8e1;
+      --shadow:       rgba(15, 84, 50, 0.18);
+    }
+
+    html, body {
+      min-height: 100%;
+      font-family: 'Outfit', sans-serif;
+      background: #c8deca;
+      overflow-x: hidden;
+    }
+
+    /* Noise texture on bg */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Soft radial light in bg */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255,255,255,0.18) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── CARD ── */
+    .card {
+      width: 100%;
+      max-width: 460px;
+      background: var(--cream);
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.6) inset,
+        0 24px 80px rgba(0,0,0,0.2),
+        0 6px 20px rgba(0,0,0,0.08);
+      animation: cardIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(40px) scale(0.96); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 340px;
+      overflow: hidden;
+    }
+
+    .hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 60%;
+      display: block;
+      filter: brightness(0.6) saturate(1.15);
+      animation: heroZoom 10s ease-out both;
+    }
+
+    @keyframes heroZoom {
+      from { transform: scale(1.1); }
+      to   { transform: scale(1.02); }
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at center, transparent 20%, rgba(0,0,0,0.18) 100%),
+        linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(10,50,25,0.65) 100%);
+    }
+
+    /* ── BADGE ── */
+    .badge {
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      background: var(--gold);
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      padding: 6px 20px;
+      border-radius: 50px;
+      white-space: nowrap;
+      box-shadow: 0 3px 16px rgba(232,160,32,0.55);
+      animation: badgeIn 0.5s 0.3s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    @keyframes badgeIn {
+      from { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    /* ── HERO TEXT ── */
+    .hero-text {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 0 26px 28px;
+      z-index: 2;
+      text-align: center;
+      animation: textIn 0.6s 0.15s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    @keyframes textIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-text h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.7rem, 5.5vw, 2.25rem);
+      font-weight: 900;
+      font-style: italic;
+      color: var(--white);
+      line-height: 1.15;
+      text-shadow: 0 2px 24px rgba(0,0,0,0.5);
+    }
+
+    .hero-text h1 em {
+      font-style: normal;
+      color: #ffd97a;
+    }
+
+    /* ── ELIGIBILITY BAR ── */
+    .elig-bar {
+      background: var(--green-light);
+      border-bottom: 1px solid #c8dfd4;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--green-dark);
+      animation: textIn 0.5s 0.3s both;
+    }
+
+    .elig-bar .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.75); }
+    }
+
+    /* ── BODY CONTENT ── */
+    .body-content {
+      padding: 22px 28px 4px;
+      animation: textIn 0.5s 0.35s both;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+
+    .chip {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--white);
+      color: var(--green-dark);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 5px 13px;
+      border-radius: 50px;
+      border: 1.5px solid var(--border);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+
+    .chip-icon {
+      width: 14px;
+      height: 14px;
+      background: var(--green-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .chip-icon svg {
+      width: 8px;
+      height: 8px;
+      color: var(--green);
+    }
+
+    .sub-text {
+      text-align: center;
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .sub-text strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* ── ELIGIBILITY HINTS ── */
+    .elig-hints {
+      margin: 16px 0 0;
+      background: var(--gold-light);
+      border: 1.5px solid #f0d080;
+      border-radius: 12px;
+      padding: 12px 16px;
+    }
+
+    .elig-hints p {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #7a5a10;
+      margin-bottom: 7px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .elig-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .elig-tag {
+      font-size: 0.7rem;
+      color: #6b4a08;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid #e5c360;
+      border-radius: 50px;
+      padding: 3px 10px;
+      font-weight: 500;
+    }
+
+    /* ── ACTIONS ── */
+    .actions {
+      padding: 20px 28px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      animation: textIn 0.5s 0.45s both;
+    }
+
+    .btn-accept {
+      width: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 58px;
+      border-radius: 14px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #1a7a4a 0%, #229455 50%, #1a7a4a 100%);
+      background-size: 200% 200%;
+      color: #fff;
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.25) inset,
+        0 8px 24px rgba(26,122,74,0.42),
+        0 2px 8px rgba(26,122,74,0.25);
+      letter-spacing: 0.1px;
+      transition: all 0.2s cubic-bezier(0.22,1,0.36,1);
+      animation: bgShift 3s ease-in-out 1.5s infinite;
+    }
+
+    @keyframes bgShift {
+      0%, 100% { background-position: 0% 50%; }
+      50%       { background-position: 100% 50%; }
+    }
+
+    .btn-accept::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 55%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+      animation: shimmer 3s ease-in-out 2s infinite;
+    }
+
+    @keyframes shimmer {
+      0%   { left: -100%; }
+      50%  { left: 140%; }
+      100% { left: 140%; }
+    }
+
+    .btn-accept:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(26,122,74,0.5), 0 4px 12px rgba(26,122,74,0.3);
+    }
+
+    .btn-accept:active { transform: translateY(0); }
+
+    .btn-accept .arrow {
+      margin-left: 8px;
+      transition: transform 0.2s;
+    }
+
+    .btn-accept:hover .arrow { transform: translateX(5px); }
+
+    .btn-deny {
+      width: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 40px;
+      border-radius: 10px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      transition: all 0.18s ease;
+    }
+
+    .btn-deny:hover {
+      background: #f0f5f2;
+      color: var(--text);
+      border-color: #c0d0c8;
+    }
+
+    /* ── TRUST STRIP ── */
+    .trust-strip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 4px 26px 16px;
+      animation: textIn 0.5s 0.5s both;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.68rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .trust-item svg {
+      width: 12px;
+      height: 12px;
+      color: var(--green);
+      flex-shrink: 0;
+    }
+
+    .trust-div {
+      width: 1px;
+      height: 14px;
+      background: var(--border);
+    }
+
+    /* ── FINE PRINT ── */
+    .fine-print {
+      text-align: center;
+      padding: 0 24px 22px;
+      font-size: 0.63rem;
+      color: #aab4ae;
+      line-height: 1.65;
+      animation: textIn 0.5s 0.55s both;
+    }
+
+    .fine-print a {
+      color: #8aaa96;
+      text-decoration: underline;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 400px) {
+      .card { border-radius: 22px; }
+      .hero { height: 280px; }
+      .hero-text h1 { font-size: 1.6rem; }
+      .body-content, .actions { padding-left: 20px; padding-right: 20px; }
+      .trust-strip { gap: 10px; }
+    }
+
+    @media (min-width: 600px) {
+      .hero { height: 380px; }
+      .hero-text h1 { font-size: 2.35rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="card">
+
+    <!-- HERO -->
+    <div class="hero">
+      <img
+        src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=700&q=85"
+        alt="Fresh groceries and vegetables"
+        loading="eager"
+      />
+      <div class="hero-overlay"></div>
+      <div class="badge">🍃 🎁 Limited Time Benefit
+</div>
+      <div class="hero-text">
+        <h1>You May Qualify for<br/><em>Upto $1500 Monthly Grocery Benefits</em></h1>
+      </div>
+    </div>
+
+    <!-- LIVE ACTIVITY BAR -->
+    <div class="elig-bar">
+      <span class="dot"></span>
+      1,247 people checked eligibility today
+    </div>
+
+    <!-- BODY CONTENT -->
+    <div class="body-content">
+      <div class="chips">
+        <div class="chip">
+          <div class="chip-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          No cost to apply
+        </div>
+        <div class="chip">
+          <div class="chip-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          Takes under 60 sec
+        </div>
+        <div class="chip">
+          <div class="chip-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          Many families qualify
+        </div>
+      </div>
+
+      <p class="sub-text">
+        Our programs provide <strong>monthly grocery benefits</strong> to millions of Americans.
+        Many people don't realize they may qualify.
+      </p>
+
+      <!-- ELIGIBILITY HINTS
+      <div class="elig-hints">
+        <p>You may qualify if you are:</p>
+        <div class="elig-list">
+          <span class="elig-tag">Age 50+</span>
+          <span class="elig-tag">Low / Fixed Income</span>
+          <span class="elig-tag">Receiving Medicare</span>
+          <span class="elig-tag">Medicaid Enrolled</span>
+          <span class="elig-tag">Recently Unemployed</span>
+          <span class="elig-tag">Household of 2+</span>
+        </div>
+      </div>
+    </div> -->
+
+   <!-- CTA BUTTONS -->
+    <div class="actions">
+      <a
+        href="redirect.html"
+        class="btn-accept"
+        rel="noopener"
+      >
+        ✓ &nbsp;Yes, Check My Eligibility
+        <span class="arrow">→</span>
+      </a>
+      <a href="nothanks.html" class="btn-deny">
+        No thanks, I'm not interested
+      </a>
+    </div>
+    
+    <!-- TRUST STRIP -->
+    <div class="trust-strip">
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Secure &amp; Private
+      </div>
+      <div class="trust-div"></div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Under 60 Seconds
+      </div>
+      <div class="trust-div"></div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        100% Free
+      </div>
+    </div>
+
+    <!-- FINE PRINT -->
+    <p class="fine-print">
+      By clicking "Yes, Check My Eligibility" you agree to our
+      <a href="privacy.html" target="_blank">Privacy Policy</a> &amp;
+      <a href="terms.html" target="_blank">Terms of Use</a>.<br/>
+      Eligibility varies by state and household circumstances. Results not guaranteed.
+      This site connects you to third-party assistance programs.
+    </p>
+
+  </div>
+</div>
+</body>
+</html>
